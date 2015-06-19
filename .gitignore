@@ -1,0 +1,9 @@
+# Ignore backups
+*.bak
+
+# Ignore binaries
+db/
+incremental_db/
+output_files/
+simulation/
+
