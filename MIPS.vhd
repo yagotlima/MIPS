@@ -24,6 +24,17 @@ component single_port_ram
 	);
 end component;
 
+component mux is
+	generic(
+		LARGURA	: natural := 1
+	);
+	port(
+		a, b, c, d	: in  STD_LOGIC_VECTOR;
+		sel			: in  STD_LOGIC_VECTOR(1 downto 0);
+		q				: out STD_LOGIC_VECTOR(LARGURA - 1 downto 0)
+	);
+end component;
+
 begin
 	-- TODO --
 end;
