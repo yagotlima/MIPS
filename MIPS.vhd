@@ -9,6 +9,16 @@ end entity;
 
 architecture mips_arch of MIPS is
 
+component control is
+	port(
+		OP									: in  STD_LOGIC_VECTOR(5 downto 0);
+		REGDST, ALUSRC, MEMTOREG	: out STD_LOGIC;
+		REGWRITE, MEMREAD				: out STD_LOGIC;
+		MEMWRITE, BRANCH, JUMP		: out STD_LOGIC;
+		ALUOP								: out STD_LOGIC_VECTOR(1 downto 0)
+	);
+end component;
+
 component single_port_ram
 	generic 
 	(
