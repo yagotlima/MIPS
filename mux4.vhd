@@ -1,7 +1,7 @@
 LIBRARY	ieee;
 USE		ieee.std_logic_1164.all;
 
-entity mux is
+entity mux4 is
 	generic(
 		LARGURA	: natural := 1
 	);
@@ -13,7 +13,7 @@ entity mux is
 	);
 end entity;
 
-architecture mux_arch of mux is
+architecture mux4_arch of mux4 is
 begin
 	with sel select
 		q <= a when "00",

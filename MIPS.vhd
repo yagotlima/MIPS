@@ -34,7 +34,7 @@ component single_port_ram
 	);
 end component;
 
-component mux is
+component mux4 is
 	generic(
 		LARGURA	: natural := 1
 	);
