@@ -1,6 +1,9 @@
 # Ignore backups
 *.bak
 
+# Ignore reports
+*.rpt
+
 # Ignore binaries
 db/
 incremental_db/

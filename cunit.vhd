@@ -59,6 +59,7 @@ constant Sw		: STD_LOGIC_VECTOR(5 downto 0) := "101011";
 constant Beq	: STD_LOGIC_VECTOR(5 downto 0) := "000100";
 constant j		: STD_LOGIC_VECTOR(5 downto 0) := "000010";
 
+signal romAddrNatural			: natural;
 signal romAddr						: STD_LOGIC_VECTOR(3 downto 0);
 signal romOut						: STD_LOGIC_VECTOR(17 downto 0);
 
@@ -71,7 +72,9 @@ signal addrSelOut					: STD_LOGIC_VECTOR(3 downto 0);
 signal dispatch1, dispatch2	: STD_LOGIC_VECTOR(3 downto 0);
 
 begin
-	rom1: microcode_rom port map(to_integer(unsigned(romAddr)), romOut);
+	romAddrNatural <= to_integer(unsigned(romAddr));
+
+	rom1: microcode_rom port map(romAddrNatural, romOut);
 	aluctl: alu_control port map(aluop, FUNCT, ALUCONTROL);
 	
 	addrSel: mux4 generic map(4) port map(romAddrPlusOne, "0000", dispatch1, dispatch2, seq, addrSelOut);
