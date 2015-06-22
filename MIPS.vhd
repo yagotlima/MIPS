@@ -39,7 +39,7 @@ component mux4 is
 		LARGURA	: natural := 1
 	);
 	port(
-		a, b, c, d	: in  STD_LOGIC_VECTOR;
+		a, b, c, d	: in  STD_LOGIC_VECTOR(LARGURA - 1 downto 0);
 		sel			: in  STD_LOGIC_VECTOR(1 downto 0);
 		q				: out STD_LOGIC_VECTOR(LARGURA - 1 downto 0)
 	);
