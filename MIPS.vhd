@@ -9,13 +9,19 @@ end entity;
 
 architecture mips_arch of MIPS is
 
-component control is
+component cunit is
 	port(
+		CLK, RESET, ZERO				: in  STD_LOGIC;
 		OP									: in  STD_LOGIC_VECTOR(5 downto 0);
-		REGDST, ALUSRC, MEMTOREG	: out STD_LOGIC;
-		REGWRITE, MEMREAD				: out STD_LOGIC;
-		MEMWRITE, BRANCH, JUMP		: out STD_LOGIC;
-		ALUOP								: out STD_LOGIC_VECTOR(1 downto 0)
+		FUNCT								: in  STD_LOGIC_VECTOR(3 downto 0);
+		REGWRITE, REGDST, IORD		: out STD_LOGIC;
+		MEMREAD, MEMWRITE				: out STD_LOGIC;
+		PCSOURCE							: out STD_LOGIC_VECTOR(1 downto 0);
+		ALUCONTROL						: out STD_LOGIC_VECTOR(3 downto 0);
+		ALUSRCB							: out STD_LOGIC_VECTOR(1 downto 0);
+		ALUSRCA							: out STD_LOGIC;
+		MEMTOREG, IRWRITE				: out STD_LOGIC;
+		PCENABLE							: out STD_LOGIC
 	);
 end component;
 

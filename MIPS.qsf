@@ -51,7 +51,6 @@ set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulati
 set_global_assignment -name VHDL_FILE MIPS.vhd
 set_global_assignment -name VHDL_FILE single_port_ram.vhd
 set_global_assignment -name VHDL_FILE mux4.vhd
-set_global_assignment -name VHDL_FILE control.vhd
 set_global_assignment -name VHDL_FILE alu_control.vhd
 set_global_assignment -name VHDL_FILE microcode_rom.vhd
 set_global_assignment -name VHDL_FILE cunit.vhd
