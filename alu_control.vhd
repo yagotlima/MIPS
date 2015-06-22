@@ -20,6 +20,7 @@ begin
 			when "0100" => aux := "0000";
 			when "0101" => aux := "0001";
 			when "1010" => aux := "0111";
+			when others => aux := "1111";
 		end case;
 	
 		case ALUOP is
