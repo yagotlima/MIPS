@@ -40,6 +40,18 @@ component alu_control is
 	);
 end component;
 
+component mux4 is
+	generic(
+		LARGURA	: natural := 1
+	);
+
+	port(
+		a, b, c, d	: in  STD_LOGIC_VECTOR(LARGURA - 1 downto 0);
+		sel			: in  STD_LOGIC_VECTOR(1 downto 0);
+		q				: out STD_LOGIC_VECTOR(LARGURA - 1 downto 0)
+	);
+end component;
+
 signal romAddr						: STD_LOGIC_VECTOR(3 downto 0);
 signal romOut						: STD_LOGIC_VECTOR(17 downto 0);
 
@@ -47,9 +59,15 @@ signal seq							: STD_LOGIC_VECTOR(1 downto 0);
 signal pcwrite, pcwritecond	: STD_LOGIC;
 signal aluop						: STD_LOGIC_VECTOR(1 downto 0);
 
+signal romAddrPlusOne			: STD_LOGIC_VECTOR(3 downto 0);
+signal addrSelOut					: STD_LOGIC_VECTOR(3 downto 0);
+signal dispatch1, dispatch2	: STD_LOGIC_VECTOR(3 downto 0);
+
 begin
 	rom1: microcode_rom port map(to_integer(unsigned(romAddr)), romOut);
 	aluctl: alu_control port map(aluop, FUNCT, ALUCONTROL);
+	
+	addrSel: mux4 generic map(4) port map(romAddrPlusOne, "0000", dispatch1, dispatch2, seq, addrSelOut);
 	
 	seq			<= romOut(1 downto 0);
 	pcwritecond	<= romOut(2);
@@ -67,5 +85,17 @@ begin
 	aluop			<= romOut(17 downto 16);
 	
 	PCENABLE		<= pcwrite or (pcwritecond and ZERO);
+	
+	-- Microprogram counter --
+	process(RESET, CLK, addrSelOut)
+	begin
+		if (RESET = '0') then
+			romAddr <= "0000";
+		elsif rising_edge(CLK) then
+			romAddr <= addrSelOut;
+		end if;
+	end process;
+	
+	romAddrPlusOne <= STD_LOGIC_VECTOR(unsigned(romAddr) + 1);
 	
 end;
