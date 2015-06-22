@@ -52,6 +52,13 @@ component mux4 is
 	);
 end component;
 
+constant Rtype	: STD_LOGIC_VECTOR(5 downto 0) := "000000";
+constant Addi	: STD_LOGIC_VECTOR(5 downto 0) := "001000";
+constant Lw		: STD_LOGIC_VECTOR(5 downto 0) := "100011";
+constant Sw		: STD_LOGIC_VECTOR(5 downto 0) := "101011";
+constant Beq	: STD_LOGIC_VECTOR(5 downto 0) := "000100";
+constant j		: STD_LOGIC_VECTOR(5 downto 0) := "000010";
+
 signal romAddr						: STD_LOGIC_VECTOR(3 downto 0);
 signal romOut						: STD_LOGIC_VECTOR(17 downto 0);
 
@@ -97,5 +104,20 @@ begin
 	end process;
 	
 	romAddrPlusOne <= STD_LOGIC_VECTOR(unsigned(romAddr) + 1);
+	
+	-- Dispatch tables --
+	with OP select
+		dispatch1 <= x"6" when Rtype,
+						 x"A" when Addi,
+						 x"2" when Lw,
+						 x"2" when Sw,
+						 x"8" when Beq,
+						 x"9" when j,
+						 x"0" when others;
+	
+	with OP select
+		dispatch2 <= x"3" when Lw,
+						 x"5" when Sw,
+						 x"0" when others;
 	
 end;
