@@ -16,6 +16,16 @@ end entity;
 
 architecture eunit_arch of eunit is
 
+component registers is
+	port(
+		CLK, RESET						: in  STD_LOGIC;
+		REGWRITE							: in  STD_LOGIC;
+		RDREGISTER1, RDREGISTER2	: in  STD_LOGIC_VECTOR(31 downto 0);
+		WRREGISTER, WRDATA			: in  STD_LOGIC_VECTOR(31 downto 0);
+		RDDATA1, RDDATA2				: out STD_LOGIC_VECTOR(31 downto 0)
+	);
+end component;
+
 component mux4 is
 	generic(
 		LARGURA	: natural := 1
