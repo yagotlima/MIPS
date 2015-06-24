@@ -4,6 +4,7 @@
 # Ignore reports
 *.rpt
 
+# Ignore debug files
 *.jdi
 
 # Ignore binaries

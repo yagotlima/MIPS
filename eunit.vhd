@@ -16,6 +16,14 @@ end entity;
 
 architecture eunit_arch of eunit is
 
+component ALU is
+	
+	GENERIC(width: integer := 32);
+	PORT	(a,b: in std_logic_vector(width-1 downto 0);
+			 sel:in std_logic_vector(3 downto 0);
+			 saida: out std_logic_vector(width-1 downto 0));
+end component;
+
 component registers is
 	port(
 		CLK, RESET						: in  STD_LOGIC;
@@ -84,8 +92,15 @@ begin
 	aluin1 <= PC when ALUSRCA = '0' else regA;
 	
 	mux1: mux4 generic map(32) port map(regB, x"00_00_00_04", immed1, immed2, ALUSRCB, aluin2);
+	alu1: alu generic map(32) port map(aluin1, aluin2, ALUCONTROL, aluResultSig);
 	
-	-- aluOutSig <= TODO;
-	-- aluResultSig <= TODO;
-	
+	process(RESET, CLK, aluResultSig)
+	begin
+		if (RESET = '0') then
+			aluOutSig <= x"00_00_00_00";
+		elsif rising_edge(CLK) then
+			aluOutSig <= aluResultSig;
+		end if;
+	end process;
+		
 end;
