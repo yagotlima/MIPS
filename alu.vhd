@@ -9,7 +9,7 @@ ENTITY ALU IS
 	
 	GENERIC(width: integer := 32);
 	PORT	(a,b: in std_logic_vector(width-1 downto 0);
-			 sel:in std_logic_vector(2 downto 0);
+			 sel:in std_logic_vector(3 downto 0);
 			 saida: out std_logic_vector(width-1 downto 0));
 END ALU;
 
@@ -48,7 +48,7 @@ ARCHITECTURE alu_arc OF alu IS
 	  component mux
        generic (width: integer := 32);
        port (s0, s1, s2,s3, s4: in std_logic_vector (width - 1 downto 0);
-       sel: in std_logic_vector (2 downto 0);
+       sel: in std_logic_vector (3 downto 0);
        saida: out std_logic_vector (width - 1 downto 0));
 end component;
 
