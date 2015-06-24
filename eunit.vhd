@@ -104,6 +104,6 @@ begin
 		end if;
 	end process;
 	
-	WRITEDATA <= aluOutSig;
+	WRITEDATA <= regB;
 	
 end;
