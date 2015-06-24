@@ -33,13 +33,22 @@ architecture rtl of single_port_ram_with_init is
 	function init_ram
 		return memory_t is 
 		variable tmp : memory_t := (others => (others => '0'));
-	begin 
-		for addr_pos in 0 to 2**ADDR_WIDTH - 1 loop 
+	begin
+		tmp(0) := x"20080042";
+		tmp(1) := x"08000008";
+		tmp(2) := x"20090004";
+		tmp(3) := x"01095022";
+		tmp(4) := x"00084825";
+		tmp(5) := x"ac0b002c";
+		tmp(6) := x"8d2c0028";
+		tmp(7) := x"08000007";
+		tmp(8) := x"1000fff9";
+		for addr_pos in 9 to 2**ADDR_WIDTH - 1 loop 
 			-- Initialize each address with the address itself
 			tmp(addr_pos) := std_logic_vector(to_unsigned(addr_pos, DATA_WIDTH));
 		end loop;
 		return tmp;
-	end init_ram;	 
+	end init_ram;
 
 	-- Declare the RAM signal and specify a default value.	Quartus II
 	-- will create a memory initialization file (.mif) based on the 
