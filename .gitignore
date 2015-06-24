@@ -4,6 +4,8 @@
 # Ignore reports
 *.rpt
 
+*.jdi
+
 # Ignore binaries
 db/
 incremental_db/

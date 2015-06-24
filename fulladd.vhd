@@ -1,3 +1,7 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+
 ENTITY fulladd IS
         GENERIC (width: integer := 32);
         PORT (a,b: in std_logic_vector (width - 1 downto 0);
