@@ -6,8 +6,9 @@ entity registers is
 	port(
 		CLK, RESET						: in  STD_LOGIC;
 		REGWRITE							: in  STD_LOGIC;
-		RDREGISTER1, RDREGISTER2	: in  STD_LOGIC_VECTOR(31 downto 0);
-		WRREGISTER, WRDATA			: in  STD_LOGIC_VECTOR(31 downto 0);
+		RDREGISTER1, RDREGISTER2	: in  STD_LOGIC_VECTOR(4 downto 0);
+		WRREGISTER						: in  STD_LOGIC_VECTOR(4 downto 0);
+		WRDATA							: in  STD_LOGIC_VECTOR(31 downto 0);
 		RDDATA1, RDDATA2				: out STD_LOGIC_VECTOR(31 downto 0)
 	);
 end entity;
