@@ -10,7 +10,8 @@ ENTITY ALU IS
 	GENERIC(width: integer := 32);
 	PORT	(a,b: in std_logic_vector(width-1 downto 0);
 			 sel:in std_logic_vector(3 downto 0);
-			 saida: out std_logic_vector(width-1 downto 0));
+			 saida: out std_logic_vector(width-1 downto 0);
+			 zero: out std_logic);
 END ALU;
 
 ARCHITECTURE alu_arc OF alu IS
@@ -54,16 +55,18 @@ end component;
 
 	
 
-   signal s0,s1,s2,s3,s4: std_logic_vector (width - 1 downto 0);
+   signal s0,s1,s2,s3,s4,s5: std_logic_vector (width - 1 downto 0);
       BEGIN
 			and1: portAND generic map (width) port map (a, b, s0);
          or1: portOR generic map (width) port map (a, b, s1);
          asomador: fulladd generic map (width) port map (a, b, s2);
          sub1: sub generic map (width) port map (a, b, s3);
          slt1: slt generic map (width) port map (a, b, s4);
-			multx: mux generic map (width) port map (s0, s1, s2, s3, s4,sel, saida);
-
+			multx: mux generic map (width) port map (s0, s1, s2, s3, s4, sel, s5);
 			
+			saida <= s5;
+
+			zero <= '1' when s5 = x"00_00_00_00" else '0';
 										       
 END alu_arc;
 

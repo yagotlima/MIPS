@@ -21,7 +21,8 @@ component ALU is
 	GENERIC(width: integer := 32);
 	PORT	(a,b: in std_logic_vector(width-1 downto 0);
 			 sel:in std_logic_vector(3 downto 0);
-			 saida: out std_logic_vector(width-1 downto 0));
+			 saida: out std_logic_vector(width-1 downto 0);
+			 zero: out std_logic);
 end component;
 
 component registers is
@@ -92,7 +93,7 @@ begin
 	aluin1 <= PC when ALUSRCA = '0' else regA;
 	
 	mux1: mux4 generic map(32) port map(regB, x"00_00_00_04", immed1, immed2, ALUSRCB, aluin2);
-	alu1: alu generic map(32) port map(aluin1, aluin2, ALUCONTROL, aluResultSig);
+	alu1: alu generic map(32) port map(aluin1, aluin2, ALUCONTROL, aluResultSig, ZERO);
 	
 	process(RESET, CLK, aluResultSig)
 	begin
