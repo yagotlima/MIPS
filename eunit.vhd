@@ -103,5 +103,7 @@ begin
 			aluOutSig <= aluResultSig;
 		end if;
 	end process;
-		
+	
+	WRITEDATA <= aluOutSig;
+	
 end;
