@@ -55,8 +55,8 @@ begin
 	mux1: mux4 generic map(32) port map(PC, ALUOUT, x"FF_FF_FF_FF", x"FF_FF_FF_FF", muxsel, addr);
 	
 	-- The memory blocks where split in two because of the 32 bits limitation on the software's numeric variables.
-	mem1: single_port_ram_with_init generic map(32, 16) port map(CLK, ramAddr, WRITEDATA, we1, memout1);
-	mem2: single_port_ram_with_init generic map(32, 16) port map(CLK, ramAddr, WRITEDATA, we2, memout2);
+	mem1: single_port_ram_with_init generic map(32, 31) port map(CLK, ramAddr, WRITEDATA, we1, memout1);
+	mem2: single_port_ram_with_init generic map(32, 31) port map(CLK, ramAddr, WRITEDATA, we2, memout2);
 	
 	ramAddr <= to_integer(unsigned(addr(30 downto 0)));
 	
