@@ -13,21 +13,18 @@ end entity;
 
 architecture munit_arch of munit is
 
-component single_port_ram_with_init is
+component system_ram is
 
-	generic 
-	(
-		DATA_WIDTH : natural := 8;
+	generic (
 		ADDR_WIDTH : natural := 6
 	);
 
-	port 
-	(
+	port (
 		clk	: in std_logic;
 		addr	: in natural range 0 to 2**ADDR_WIDTH - 1;
-		data	: in std_logic_vector((DATA_WIDTH-1) downto 0);
+		data	: in std_logic_vector(31 downto 0);
 		we		: in std_logic := '1';
-		q		: out std_logic_vector((DATA_WIDTH -1) downto 0)
+		q		: out std_logic_vector(31 downto 0)
 	);
 
 end component;
@@ -46,8 +43,10 @@ end component;
 
 signal addr, memData		: STD_LOGIC_VECTOR(31 downto 0);
 signal memout1, memout2	: STD_LOGIC_VECTOR(31 downto 0);
+signal memout3, memout4	: STD_LOGIC_VECTOR(31 downto 0);
 signal muxsel				: STD_LOGIC_VECTOR(1 downto 0);
-signal we1, we2			: STD_LOGIC;
+signal we, wecond			: STD_LOGIC_VECTOR(3 downto 0);
+signal chipsel				: STD_LOGIC_Vector(1 downto 0);
 signal ramAddr				: natural;
 
 begin
@@ -55,14 +54,27 @@ begin
 	mux1: mux4 generic map(32) port map(PC, ALUOUT, x"FF_FF_FF_FF", x"FF_FF_FF_FF", muxsel, addr);
 	
 	-- The memory blocks where split in two because of the 32 bits limitation on the software's numeric variables.
-	mem1: single_port_ram_with_init generic map(32, 31) port map(CLK, ramAddr, WRITEDATA, we1, memout1);
-	mem2: single_port_ram_with_init generic map(32, 31) port map(CLK, ramAddr, WRITEDATA, we2, memout2);
+	mem1: system_ram generic map(30) port map(CLK, ramAddr, WRITEDATA, we(0), memout1);
+	mem2: system_ram generic map(30) port map(CLK, ramAddr, WRITEDATA, we(1), memout2);
+	mem3: system_ram generic map(30) port map(CLK, ramAddr, WRITEDATA, we(2), memout3);
+	mem4: system_ram generic map(30) port map(CLK, ramAddr, WRITEDATA, we(3), memout4);
 	
-	ramAddr <= to_integer(unsigned(addr(30 downto 0)));
+	mux2: mux4 generic map(32) port map(memout1, memout2, memout3, memout4, chipsel, memData);
+	mux3: mux4 generic map(4) port map("0001", "0010", "0100", "1000", addr(31 downto 30), wecond);
 	
-	we1 <= MEMWRITE and not(addr(31));
-	we2 <= MEMWRITE and addr(31);
-	memData <= memout1 when addr(31) = '0' else memout2;
+	we <= wecond when MEMWRITE = '1' else "0000";
+	
+	ramAddr <= to_integer(unsigned(addr(29 downto 0)));
+	
+	process(RESET, IRWRITE, addr)
+	begin
+		if rising_edge(CLK) then
+			chipsel <= addr(31 downto 30);
+		end if;
+	end process;
+		
+	-- ramAddr <= to_integer(unsigned(addr(7 downto 0)));
+	-- mem: system_ram generic map(8) port map(CLK, ramAddr, WRITEDATA, MEMWRITE, memData);
 		
 	-- Instruction register
 	process(RESET, IRWRITE, memData)

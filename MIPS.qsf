@@ -55,7 +55,6 @@ set_global_assignment -name VHDL_FILE microcode_rom.vhd
 set_global_assignment -name VHDL_FILE cunit.vhd
 set_global_assignment -name VHDL_FILE iunit.vhd
 set_global_assignment -name VHDL_FILE munit.vhd
-set_global_assignment -name VHDL_FILE mipsmpu.vhd
 set_global_assignment -name VHDL_FILE sub.vhd
 set_global_assignment -name VHDL_FILE fulladd.vhd
 set_global_assignment -name VHDL_FILE somador.vhd
@@ -69,5 +68,5 @@ set_global_assignment -name VHDL_FILE registers.vhd
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-set_global_assignment -name VHDL_FILE single_port_ram_with_init.vhd
+set_global_assignment -name VHDL_FILE system_ram.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
