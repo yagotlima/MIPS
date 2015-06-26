@@ -8,16 +8,16 @@ ENTITY sub IS
 end sub;
 
 ARCHITECTURE sub_arc OF sub IS
-        component somador
-        port (a, b, cin: in std_logic; 
-				  saida, cout: out std_logic);
+        component fulladd IS
+        generic (width: integer := 32);
+        port (a,b: in std_logic_vector (width - 1 downto 0);
+              saida: out std_logic_vector (width - 1 downto 0));
         end component;
 		  signal carry: std_logic_vector (width downto 0) := (others => '0');
+		  signal	negb: std_logic_vector(width-1 downto 0);
 		  signal	compb: std_logic_vector(width-1 downto 0);
 	BEGIN
-		  compb <= not b;	
-        stages: for i in width - 1 downto 0 generate
-                somador1: somador port map (a(i), b(i), carry(i), saida(i), carry(i + 1));
-					 
-        end generate;
+		  negb <= not b;
+		  add1: fulladd port map(negb, x"00_00_00_01", compb);
+		  add2: fulladd port map(a, compb, saida);
 END sub_arc;
