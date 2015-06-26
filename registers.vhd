@@ -32,8 +32,12 @@ begin
 	-- Read A
 	process(CLK)
 	begin
-	if(rising_edge(CLK)) then 
-		RDDATA1 <= ram(addr1);
+	if(rising_edge(CLK)) then
+		if addr1 = 0 then
+			RDDATA1 <= x"00_00_00_00";
+		else
+			RDDATA1 <= ram(addr1);
+		end if;
 	end if;
 	end process;
 
@@ -41,7 +45,11 @@ begin
 	process(CLK)
 	begin
 	if(rising_edge(CLK)) then 
-		RDDATA2 <= ram(addr2);
+		if addr2 = 0 then
+			RDDATA2 <= x"00_00_00_00";
+		else
+			RDDATA2 <= ram(addr2);
+		end if;
 	end if;
 	end process;
 	
