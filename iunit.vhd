@@ -37,7 +37,7 @@ begin
 	begin
 		if (RESET = '0') then
 			pcout <= x"00_00_00_00";
-		elsif rising_edge(CLK) then
+		elsif PCENABLE = '1' and rising_edge(CLK) then
 			pcout <= pcin;
 		end if;
 	end process;
