@@ -69,7 +69,7 @@ begin
 	immed1(31 downto 16) <= x"0000" when INSTRUCTION(15) = '0' else x"FFFF";
 	
 	immed2(1 downto 0)	<= "00";
-	immed2(31 downto 2)	<= aluin1(29 downto 0);
+	immed2(31 downto 2)	<= immed1(29 downto 0);
 	
 	aluin1 <= PC when ALUSRCA = '0' else rdData1;
 	
