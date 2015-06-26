@@ -53,7 +53,6 @@ signal wrData							: STD_LOGIC_VECTOR(31 downto 0);
 signal aluResultSig, aluOutSig	: STD_LOGIC_VECTOR(31 downto 0);
 signal rdData1, rdData2				: STD_LOGIC_VECTOR(31 downto 0);
 signal immed1, immed2				: STD_LOGIC_VECTOR(31 downto 0);
-signal regA, regB						: STD_LOGIC_VECTOR(31 downto 0);
 signal aluin1, aluin2				: STD_LOGIC_VECTOR(31 downto 0);
 
 begin
@@ -72,27 +71,9 @@ begin
 	immed2(1 downto 0)	<= "00";
 	immed2(31 downto 2)	<= aluin1(29 downto 0);
 	
-	process(RESET, CLK, rdData1)
-	begin
-		if (RESET = '0') then
-			regA <= x"00_00_00_00";
-		elsif rising_edge(CLK) then
-			regA <= rdData1;
-		end if;
-	end process;
+	aluin1 <= PC when ALUSRCA = '0' else rdData1;
 	
-	process(RESET, CLK, rdData2)
-	begin
-		if (RESET = '0') then
-			regB <= x"00_00_00_00";
-		elsif rising_edge(CLK) then
-			regB <= rdData2;
-		end if;
-	end process;
-	
-	aluin1 <= PC when ALUSRCA = '0' else regA;
-	
-	mux1: mux4 generic map(32) port map(regB, x"00_00_00_04", immed1, immed2, ALUSRCB, aluin2);
+	mux1: mux4 generic map(32) port map(rdData2, x"00_00_00_04", immed1, immed2, ALUSRCB, aluin2);
 	alu1: alu generic map(32) port map(aluin1, aluin2, ALUCONTROL, aluResultSig, ZERO);
 	
 	process(RESET, CLK, aluResultSig)
@@ -104,6 +85,6 @@ begin
 		end if;
 	end process;
 	
-	WRITEDATA <= regB;
+	WRITEDATA <= rdData2;
 	
 end;
